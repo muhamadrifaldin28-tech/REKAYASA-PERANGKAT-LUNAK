@@ -1,0 +1,151 @@
+{% extends 'pembayaran/base.html' %}
+{% block title %}Rancangan Sistem - Kantin POS{% endblock %}
+{% block eyebrow %}Dokumentasi{% endblock %}
+{% block heading %}Rancangan Sistem{% endblock %}
+{% block content %}
+  <p style="color:var(--muted);max-width:640px;margin:-6px 0 26px;font-size:14.5px;">
+    Halaman ini menampilkan rancangan basis data (ERD) dan rancangan proses bisnis (Use Case Diagram)
+    dari Sistem Informasi Pembayaran Kantin, sesuai dengan struktur data dan alur transaksi yang
+    diimplementasikan pada aplikasi ini.
+  </p>
+
+  <div class="card">
+    <div class="card-head">
+      <h2>Entity Relationship Diagram (ERD)</h2>
+    </div>
+    <div class="card-body">
+      <div class="mermaid">
+erDiagram
+    PELANGGAN {
+        int id PK
+        string nama
+    }
+    KASIR {
+        int id PK
+        string nama
+    }
+    SISTEM_PEMBAYARAN {
+        int id PK
+        string nama
+    }
+    PILIH_MENU {
+        int id PK
+        int pelanggan_id FK
+        string keterangan
+    }
+    PESAN_MAKANAN_MINUMAN {
+        int id PK
+        int pelanggan_id FK
+        string keterangan
+    }
+    MELAKUKAN_PEMBAYARAN {
+        int id PK
+        int pelanggan_id FK
+        int kasir_id FK
+        string keterangan
+    }
+    VALIDASI_PEMBAYARAN {
+        int id PK
+        int kasir_id FK
+        int sistem_pembayaran_id FK
+        string keterangan
+    }
+    MENYIAPKAN_PESANAN {
+        int id PK
+        int kasir_id FK
+        string keterangan
+    }
+    MENGANTAR_PESANAN {
+        int id PK
+        int kasir_id FK
+        int pelanggan_id FK
+        string keterangan
+    }
+    MENERIMA_PESANAN {
+        int id PK
+        int pelanggan_id FK
+        string keterangan
+    }
+
+    PELANGGAN ||--o{ PILIH_MENU : melakukan
+    PELANGGAN ||--o{ PESAN_MAKANAN_MINUMAN : melakukan
+    PELANGGAN ||--o{ MELAKUKAN_PEMBAYARAN : melakukan
+    KASIR ||--o{ MELAKUKAN_PEMBAYARAN : menerima
+    KASIR ||--o{ VALIDASI_PEMBAYARAN : melakukan
+    SISTEM_PEMBAYARAN ||--o{ VALIDASI_PEMBAYARAN : digunakan_pada
+    KASIR ||--o{ MENYIAPKAN_PESANAN : melakukan
+    KASIR ||--o{ MENGANTAR_PESANAN : melakukan
+    PELANGGAN ||--o{ MENGANTAR_PESANAN : menerima
+    PELANGGAN ||--o{ MENERIMA_PESANAN : melakukan
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <h2>Use Case Diagram</h2>
+    </div>
+    <div class="card-body">
+      <div class="mermaid">
+flowchart LR
+    Pelanggan(["🧑 Pelanggan"])
+    Kasir(["🧑‍💼 Kasir"])
+
+    UC1(["Pilih Menu"])
+    UC2(["Pesan Makanan/Minuman"])
+    UC3(["Melakukan Pembayaran"])
+    UC4(["Validasi Pembayaran"])
+    UC5(["Sistem Pembayaran"])
+    UC6(["Menyiapkan Pesanan"])
+    UC7(["Mengantar Pesanan"])
+    UC8(["Menerima Pesanan"])
+
+    Pelanggan --> UC1
+    Pelanggan --> UC2
+    Pelanggan --> UC3
+    Pelanggan --> UC8
+    Kasir --> UC4
+    Kasir --> UC5
+    Kasir --> UC6
+    Kasir --> UC7
+
+    UC3 --> UC4
+    UC4 --> UC5
+    UC4 --> UC6
+    UC6 --> UC7
+    UC7 --> UC8
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h2>Keterangan Alur</h2></div>
+    <div class="card-body" style="font-size:14px;line-height:1.7;color:var(--text);">
+      <ol style="margin:0;padding-left:20px;">
+        <li>Pelanggan memilih menu, lalu memesan makanan/minuman.</li>
+        <li>Pelanggan melakukan pembayaran kepada kasir.</li>
+        <li>Kasir memvalidasi pembayaran melalui sistem pembayaran yang digunakan.</li>
+        <li>Setelah tervalidasi, kasir menyiapkan pesanan.</li>
+        <li>Kasir mengantar pesanan kepada pelanggan.</li>
+        <li>Pelanggan menerima pesanan sebagai tahap akhir transaksi.</li>
+      </ol>
+    </div>
+  </div>
+
+  <a class="back-link" href="{% url 'index' %}">← Kembali ke Beranda</a>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#FDF1E6',
+        primaryBorderColor: '#E2853A',
+        primaryTextColor: '#1C231F',
+        lineColor: '#767F76',
+        fontFamily: 'Inter, sans-serif'
+      }
+    });
+  </script>
+{% endblock %}

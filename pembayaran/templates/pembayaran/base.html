@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Kantin POS{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F6F4EF; --sidebar:#16211C; --sidebar-text:#AEB8AE; --sidebar-text-active:#F6F4EF;
+    --accent:#E2853A; --accent-dark:#C76B23; --text:#1C231F; --muted:#767F76;
+    --border:#E4E0D6; --card:#FFFFFF; --danger:#C0453A; --danger-bg:#FBEAE7;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);}
+  h1,h2,.brand,.nav-section{font-family:'Space Grotesk',sans-serif;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;}
+
+  .layout{display:flex;min-height:100vh;}
+
+  /* SIDEBAR */
+  .sidebar{width:250px;background:var(--sidebar);color:var(--sidebar-text);flex-shrink:0;
+    display:flex;flex-direction:column;padding:24px 0;}
+  .brand{color:#fff;font-size:19px;font-weight:700;padding:0 24px 6px;display:flex;align-items:center;gap:9px;}
+  .brand-dot{width:9px;height:9px;border-radius:2px;background:var(--accent);display:inline-block;}
+  .brand-sub{padding:0 24px 20px;font-size:11px;letter-spacing:.08em;color:#6C776E;text-transform:uppercase;font-family:'JetBrains Mono',monospace;}
+  .torn{height:8px;background-image:linear-gradient(135deg,var(--bg) 50%,transparent 50%),linear-gradient(45deg,var(--bg) 50%,transparent 50%);
+    background-size:12px 12px;background-position:bottom;margin-bottom:8px;}
+  .nav-section{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#5C6960;padding:18px 24px 6px;font-weight:600;}
+  .nav-link{display:flex;position:relative;z-index:2;align-items:center;gap:10px;padding:9px 24px;font-size:14px;text-decoration:none;
+    color:var(--sidebar-text);border-left:3px solid transparent;transition:.15s;}
+  .nav-link:hover{background:#1E2C24;color:#fff;}
+  .nav-link.active{background:#1E2C24;color:var(--sidebar-text-active);border-left-color:var(--accent);font-weight:500;}
+  .nav-badge{width:20px;height:20px;border-radius:6px;background:#26332B;display:flex;align-items:center;justify-content:center;
+    font-size:10px;font-family:'JetBrains Mono',monospace;color:#9AA69B;flex-shrink:0;}
+  .nav-link.active .nav-badge{background:var(--accent);color:#1C231F;}
+
+  /* MAIN */
+  .main{flex:1;display:flex;flex-direction:column;min-width:0;}
+  .topbar{background:var(--card);border-bottom:1px solid var(--border);padding:18px 36px;
+    display:flex;align-items:center;justify-content:space-between;}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 4px;}
+  .topbar h1{margin:0;font-size:22px;font-weight:700;}
+  .content{padding:32px 36px 60px;}
+
+  /* CARD */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:24px;overflow:hidden;}
+  .card-head{padding:16px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+  .card-head h2{margin:0;font-size:15px;font-weight:600;}
+  .card-body{padding:22px;}
+
+  /* TABLE */
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  thead th{text-align:left;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;
+    letter-spacing:.05em;color:var(--muted);font-weight:500;padding:10px 22px;background:#FAF9F6;border-bottom:1px solid var(--border);}
+  tbody td{padding:12px 22px;border-bottom:1px solid var(--border);color:var(--text);}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:#FAF9F6;}
+  .empty-row td{text-align:center;color:var(--muted);padding:34px;font-style:italic;}
+
+  /* FORM */
+  form.tambah label{display:block;font-size:12.5px;font-weight:500;color:var(--muted);margin:14px 0 5px;}
+  form.tambah label:first-of-type{margin-top:0;}
+  form.tambah input, form.tambah select{width:100%;padding:9px 12px;border:1px solid var(--border);
+    border-radius:7px;font-size:14px;font-family:'Inter',sans-serif;background:#FCFBF9;color:var(--text);}
+  form.tambah input:focus, form.tambah select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(226,133,58,.18);}
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:7px;border:none;
+    font-size:13.5px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+  .btn-primary{background:var(--accent);color:#1C231F;margin-top:16px;}
+  .btn-primary:hover{background:var(--accent-dark);color:#fff;}
+  .btn-danger{background:var(--danger-bg);color:var(--danger);padding:6px 12px;font-size:12px;}
+  .btn-danger:hover{background:var(--danger);color:#fff;}
+
+  ul.errorlist{color:var(--danger);font-size:12px;margin:4px 0 0;padding-left:16px;}
+
+  .back-link{display:inline-flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:13px;margin-top:4px;}
+  .back-link:hover{color:var(--accent-dark);}
+
+  /* DASHBOARD CARDS (index) */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;}
+  .mod-card{background:var(--card);position:relative;z-index:2;cursor:pointer;border:1px solid var(--border);border-radius:10px;padding:18px 20px;
+    text-decoration:none;color:var(--text);transition:.15s;display:flex;flex-direction:column;gap:10px;}
+  .mod-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 18px rgba(28,35,31,.06);}
+  .mod-icon{width:34px;height:34px;border-radius:8px;background:#FDF1E6;color:var(--accent-dark);
+    display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;}
+  .mod-name{font-weight:600;font-size:14.5px;}
+  .mod-go{font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;}
+
+  @media(max-width:820px){
+    .layout{flex-direction:column;}
+    .sidebar{width:100%;padding:16px 0;}
+    .content{padding:22px 16px 40px;}
+    .topbar{padding:16px 20px;}
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-dot"></span>Kantin&nbsp;POS</div>
+    <div class="brand-sub">Sistem Pembayaran</div>
+    <div class="torn"></div>
+
+    <a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}" href="{% url 'index' %}">
+      <span class="nav-badge">•</span> Beranda
+    </a>
+
+    <div class="nav-section">Data Master</div>
+    <a class="nav-link {% if request.resolver_match.url_name == 'pelanggan_list' %}active{% endif %}" href="{% url 'pelanggan_list' %}"><span class="nav-badge">01</span> Pelanggan</a>
+    <a class="nav-link {% if request.resolver_match.url_name == 'kasir_list' %}active{% endif %}" href="{% url 'kasir_list' %}"><span class="nav-badge">02</span> Kasir</a>
+    <a class="nav-link {% if request.resolver_match.url_name == 'sistem_pembayaran_list' %}active{% endif %}" href="{% url 'sistem_pembayaran_list' %}"><span class="nav-badge">03</span> Sistem Pembayaran</a>
+
+    <div class="nav-section">Alur Transaksi</div>
+    <a class="nav-link {% if request.resolver_match.url_name == 'pilih_menu_list' %}active{% endif %}" href="{% url 'pilih_menu_list' %}"><span class="nav-badge">1</span> Pilih Menu</a>
+    <a class="nav-link {% if request.resolver_match.url_name == 'pesan_list' %}active{% endif %}" href="{% url 'pesan_list' %}"><span class="nav-badge">2</span> Pesan Makan/Minum</a>
+    <a class="nav-link {% if request.resolver_match.url_name == 'pembayaran_list' %}active{% endif %}" href="{% url 'pembayaran_list' %}"><span class="nav-badge">3</span> Lakukan Pembayaran</a>
+    <a class="nav-link {% if request.resolver_match.url_name == 'validasi_list' %}active{% endif %}" href="{% url 'validasi_list' %}"><span class="nav-badge">4</span> Validasi Pembayaran</a>
+    <a class="nav-link {% if request.resolver_match.url_name == 'siapkan_list' %}active{% endif %}" href="{% url 'siapkan_list' %}"><span class="nav-badge">5</span> Siapkan Pesanan</a>
+    <a class="nav-link {% if request.resolver_match.url_name == 'antar_list' %}active{% endif %}" href="{% url 'antar_list' %}"><span class="nav-badge">6</span> Antar Pesanan</a>
+    <a class="nav-link {% if request.resolver_match.url_name == 'terima_list' %}active{% endif %}" href="{% url 'terima_list' %}"><span class="nav-badge">7</span> Terima Pesanan</a>
+
+    <div class="nav-section">Dokumentasi</div>
+    <a class="nav-link {% if request.resolver_match.url_name == 'rancangan' %}active{% endif %}" href="{% url 'rancangan' %}"><span class="nav-badge">◇</span> Rancangan Sistem</a>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <p class="eyebrow">{% block eyebrow %}Dashboard{% endblock %}</p>
+        <h1>{% block heading %}Beranda{% endblock %}</h1>
+      </div>
+    </div>
+    <div class="content">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+</div>
+</body>
+</html>

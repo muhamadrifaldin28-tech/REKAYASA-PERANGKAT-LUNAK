@@ -1,0 +1,43 @@
+{% extends 'pembayaran/base.html' %}
+{% block title %}Beranda - Kantin POS{% endblock %}
+{% block eyebrow %}Sistem Informasi Pembayaran Kantin{% endblock %}
+{% block heading %}Selamat datang 👋{% endblock %}
+{% block content %}
+<p style="color:var(--muted);max-width:560px;margin:-6px 0 26px;font-size:14.5px;">
+  Pilih salah satu modul di bawah ini untuk mengelola data, mulai dari pelanggan dan kasir
+  sampai seluruh alur transaksi pemesanan hingga pesanan diterima.
+</p>
+
+<div class="grid">
+  <a class="mod-card" href="{% url 'pelanggan_list' %}">
+    <span class="mod-icon">01</span><span class="mod-name">Pelanggan</span><span class="mod-go">Buka modul →</span>
+  </a>
+  <a class="mod-card" href="{% url 'kasir_list' %}">
+    <span class="mod-icon">02</span><span class="mod-name">Kasir</span><span class="mod-go">Buka modul →</span>
+  </a>
+  <a class="mod-card" href="{% url 'sistem_pembayaran_list' %}">
+    <span class="mod-icon">03</span><span class="mod-name">Sistem Pembayaran</span><span class="mod-go">Buka modul →</span>
+  </a>
+  <a class="mod-card" href="{% url 'pilih_menu_list' %}">
+    <span class="mod-icon">04</span><span class="mod-name">Pilih Menu</span><span class="mod-go">Buka modul →</span>
+  </a>
+  <a class="mod-card" href="{% url 'pesan_list' %}">
+    <span class="mod-icon">05</span><span class="mod-name">Pesan Makanan/Minuman</span><span class="mod-go">Buka modul →</span>
+  </a>
+  <a class="mod-card" href="{% url 'pembayaran_list' %}">
+    <span class="mod-icon">06</span><span class="mod-name">Melakukan Pembayaran</span><span class="mod-go">Buka modul →</span>
+  </a>
+  <a class="mod-card" href="{% url 'validasi_list' %}">
+    <span class="mod-icon">07</span><span class="mod-name">Validasi Pembayaran</span><span class="mod-go">Buka modul →</span>
+  </a>
+  <a class="mod-card" href="{% url 'siapkan_list' %}">
+    <span class="mod-icon">08</span><span class="mod-name">Menyiapkan Pesanan</span><span class="mod-go">Buka modul →</span>
+  </a>
+  <a class="mod-card" href="{% url 'antar_list' %}">
+    <span class="mod-icon">09</span><span class="mod-name">Mengantar Pesanan</span><span class="mod-go">Buka modul →</span>
+  </a>
+  <a class="mod-card" href="{% url 'terima_list' %}">
+    <span class="mod-icon">10</span><span class="mod-name">Menerima Pesanan</span><span class="mod-go">Buka modul →</span>
+  </a>
+</div>
+{% endblock %}
